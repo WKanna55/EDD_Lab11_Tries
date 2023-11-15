@@ -1,12 +1,9 @@
 """Implementacion"""
-
-
 class NodoTrie:
     def __init__(self, valor) -> None:
         self.valor = valor
         self.hijos = {}  # a b c d ... z
-        self.eow = False
-
+        self.eow = False # fin de palabra(eow)
 
 class Trie:
     def __init__(self) -> None:
@@ -48,44 +45,27 @@ class Trie:
         for char in nodo.hijos:
             self.imprimir_trie_(nodo.hijos[char], prefijo)
 
-    def search(self, palabra):
-        current = self.raiz
-        for char in palabra:
-            if char not in current.hijos:
-                return False
-            current = current.hijos[char]
-        return current.eow
-
-    def delete(self, palabra):
-        if palabra is None: return
-        self.delete_(self.raiz, palabra, 0)
-
-    def delete_(self, nodo, palabra, indice):
-        if indice == len(palabra):
-            nodo.eow = False
-            return
-        char = palabra[indice]
-        child = nodo.hijos.get(char, None)
-        self.delete_(child, palabra, indice + 1)
-        if len(child.hijos) == 0 and not child.eow:
-            nodo.hijos.pop(char)
-
-    def remove(self, palabra):
+    def buscar(self, palabra):
         actual = self.raiz
         for char in palabra:
             if char not in actual.hijos:
                 return False
             actual = actual.hijos[char]
-        if actual.eow:
-            actual.eow = False
-            for child in actual.hijos.values():
-                self.remove(child.valor)
-            return True
-        if actual.hijos:
-            actual.hijos = {}
-            return True
-        actual.valor = None
-        return True
+        return actual.eow
+
+    def eliminar(self, palabra):
+        if palabra is None: return
+        self.eliminar_(self.raiz, palabra, 0)
+
+    def eliminar_(self, nodo, palabra, indice):
+        if indice == len(palabra):
+            nodo.eow = False
+            return
+        char = palabra[indice]
+        hijo = nodo.hijos.get(char, None)
+        self.eliminar_(hijo, palabra, indice + 1)
+        if len(hijo.hijos) == 0 and not hijo.eow:
+            nodo.hijos.pop(char)
 
     def contar_palabras(self):
         return self.contar_palabras_(self.raiz)
@@ -105,10 +85,17 @@ trie = Trie()
 trie.insertar("INTERACT")
 trie.insertar("INTERNATIONAL")
 trie.insertar("INTERNET")
-print(trie.search("INTERACT"))
-print(trie.search("INTERN"))
+print(trie.buscar("INTERACT"))
+print(trie.buscar("INTERN"))
 #trie.delete("INTERNATIONAL")
 #trie.pre_order()
 #trie.print()
 trie.post_order()
 print(trie.contar_palabras())
+
+
+"""Ejercicio 01: Construir un trie(inicio)"""
+"""Ejercicio 01: Construir un trie(fin)"""
+
+"""Ejercicio 01: Construir un trie(inicio)"""
+"""Ejercicio 01: Construir un trie(inicio)"""
